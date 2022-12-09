@@ -6,6 +6,7 @@ import pairmatching.domain.Course;
 import pairmatching.domain.Crew;
 import pairmatching.domain.Level;
 import pairmatching.domain.Pair;
+import pairmatching.domain.menu.Menu;
 
 public class OutputView {
 
@@ -13,6 +14,12 @@ public class OutputView {
     private static final String COURSE = "과정: ";
     private static final String MISSION = "미션:";
     private static final String DELIMITER = " : ";
+
+    public void printInitialMenu() {
+        Menu.getAll()
+                .forEach(System.out::println);
+        System.out.println();
+    }
 
     public void printMenu() {
         System.out.println(SEPARATOR);
@@ -39,5 +46,6 @@ public class OutputView {
                     .collect(Collectors.joining(DELIMITER));
             System.out.println(result);
         }
+        System.out.println();
     }
 }

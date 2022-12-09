@@ -5,6 +5,7 @@ import pairmatching.util.InputValidator;
 
 public class InputView {
 
+    private static final String CHOICE_OPTION = "기능을 선택하세요.";
     private static final String ENTER_ANSWER = "과정, 레벨, 미션을 선택하세요.\nex) 백엔드, 레벨1, 자동차경주";
     private final InputValidator inputValidator;
 
@@ -14,6 +15,13 @@ public class InputView {
 
     private String input() {
         return Console.readLine();
+    }
+
+    public String readMainMenu() {
+        System.out.println(CHOICE_OPTION);
+        String answer = input();
+        inputValidator.isRangeValid(answer);
+        return answer;
     }
 
     public String readAnswer() {
