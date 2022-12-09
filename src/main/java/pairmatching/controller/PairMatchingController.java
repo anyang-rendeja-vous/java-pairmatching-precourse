@@ -1,6 +1,13 @@
 package pairmatching.controller;
 
 import java.util.List;
+import pairmatching.domain.Course;
+import pairmatching.domain.Crew;
+import pairmatching.domain.CrewRepository;
+import pairmatching.domain.Level;
+import pairmatching.domain.MatchingResults;
+import pairmatching.domain.Mission;
+import pairmatching.domain.Pair;
 import pairmatching.util.CrewReader;
 import pairmatching.view.InputView;
 import pairmatching.view.OutputView;
@@ -18,10 +25,28 @@ public class PairMatchingController {
     }
 
     public void run() {
-        outputView.printMenu();
-        inputView.readAnswer();
+        initialCrews();
 
+        outputView.printMenu();
+        String answer = inputView.readAnswer();
+        String[] split = answer.split(", "); // 과정 레벨 미션
+
+        Course course = Course.findCourse(split[0]);
+        Level level = Level.findLevel(split[1]); // TODO: 레벨이랑 미션이 올바른지 검증
+        Mission mission = Mission.findMissionByName(split[2]);
+
+        // 1. 페어 매칭
+        MatchingResults matchingResults = new MatchingResults(mission, CrewRepository.getCrewsByCourse(course));
+        List<Pair> resultsByMission = matchingResults.getResultsByMission(mission);
+        outputView.printResult(resultsByMission);
+
+    }
+
+    private void initialCrews() {
         CrewReader crewReader = new CrewReader();
-        List<String> shuffledCrew = crewReader.getShuffledCrew(BACKEND_CREW_NAME_LOCATION);
+        List<String> backendCrews = crewReader.getShuffledCrew(BACKEND_CREW_NAME_LOCATION);
+        backendCrews.forEach(backendCrew -> CrewRepository.addCrew(new Crew(Course.BACKEND, backendCrew)));
+        List<String> frontendCrews = crewReader.getShuffledCrew(FRONTEND_CREW_NAME_LOCATION);
+        frontendCrews.forEach(frontendCrew -> CrewRepository.addCrew(new Crew(Course.FRONTEND, frontendCrew)));
     }
 }

@@ -20,6 +20,7 @@ public enum Level {
     LEVEL4("레벨4", Arrays.asList(PERFORMANCE_IMPROVEMENT, DEPLOY)),
     LEVEL5("레벨5", null);
 
+    private static final String NOT_EXISTED_LEVEL_ERROR = "존재하지 않는 레벨입니다.";
     private static final String PREFIX = "  - ";
     private static final String SEPARATOR = ": ";
     private static final String DELIMITER = " | ";
@@ -45,5 +46,12 @@ public enum Level {
         return missions.stream()
                 .map(Mission::getName)
                 .collect(Collectors.joining(DELIMITER));
+    }
+
+    public static Level findLevel(String levelName) {
+        return Arrays.stream(Level.values())
+                .filter(level -> level.name.equals(levelName))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException(NOT_EXISTED_LEVEL_ERROR));
     }
 }

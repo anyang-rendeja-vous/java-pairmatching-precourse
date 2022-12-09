@@ -7,6 +7,7 @@ public enum Course {
     BACKEND("백엔드"),
     FRONTEND("프론트엔드");
 
+    private static final String NOT_EXISTED_COURSE_ERROR = "존재하지 않는 과정입니다.";
     private static final String DELIMITER = " | ";
     private String name;
 
@@ -23,5 +24,12 @@ public enum Course {
         return Arrays.stream(Course.values())
                 .map(Course::getName)
                 .collect(Collectors.joining(DELIMITER));
+    }
+
+    public static Course findCourse(String courseName) {
+        return Arrays.stream(Course.values())
+                .filter(course -> course.name.equals(courseName))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException(NOT_EXISTED_COURSE_ERROR));
     }
 }
