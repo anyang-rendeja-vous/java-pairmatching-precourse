@@ -2,22 +2,23 @@ package pairmatching;
 
 import java.util.Arrays;
 import java.util.Objects;
+import pairmatching.controller.PairMatchingController;
 
 public enum MainMenu {
 
-    PAIR_MATCHING_MANAGEMENT("1", "페어 매칭"),
-    PAIR_LIST_PRINT_MANAGEMENT("2", "페어 조회"),
-    PAIR_INITIALIZATION_MANAGEMENT("3", "페어 초기화"),
-    QUIT("Q", "종료");
+    PAIR_MATCHING_MANAGEMENT("1", "페어 매칭", new PairMatchingController()::inputProcess),
+    PAIR_LIST_PRINT_MANAGEMENT("2", "페어 조회", new PairMatchingController()::run),
+    PAIR_INITIALIZATION_MANAGEMENT("3", "페어 초기화", new PairMatchingController()::run),
+    QUIT("Q", "종료", null);
 
     private final String selectNumber;
     private final String title;
-//    private final Runnable function;
+    private final Runnable function;
 
-    MainMenu(String selectNumber, String title) {
+    MainMenu(String selectNumber, String title, Runnable function) {
         this.selectNumber = selectNumber;
         this.title = title;
-//        this.function = function;
+        this.function = function;
     }
 
     public String getSelectNumber() {
@@ -28,9 +29,9 @@ public enum MainMenu {
         return title;
     }
 
-//    public Runnable getFunction() {
-//        return function;
-//    }
+    public Runnable getFunction() {
+        return function;
+    }
 
     public static void printMenu() {
         System.out.println("기능을 선택하세요.");
@@ -44,8 +45,8 @@ public enum MainMenu {
                 .filter(function -> Objects.equals(function.getSelectNumber(), input))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 입력입니다."));
-//        selectMenu.getFunction()
-//                .run();
+        selectMenu.getFunction()
+                .run();
     }
 
     @Override

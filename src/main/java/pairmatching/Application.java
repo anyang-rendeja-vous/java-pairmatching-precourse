@@ -1,11 +1,11 @@
 package pairmatching;
 
 import java.io.IOException;
-import pairmatching.controller.PairMatchingController;
+import pairmatching.controller.MainController;
 
 public class Application {
     public static void main(String[] args) throws IOException {
-        PairMatchingController pairMatchingController = new PairMatchingController();
-        pairMatchingController.run();
+        MainController mainController = new MainController();
+        mainController.run();
     }
 }

@@ -13,6 +13,7 @@ public class CrewList {
     private final String BACKEND_MD = "src/main/resources/backend-crew.md";
     private final String FRONTEND_MD = "src/main/resources/frontend-crew.md";
 
+    //랜덤 페어 반환
     public List<List<String>> getPair(String course) {
         if (course.equals(Course.BACKEND.getCourseName())) {
             try {
@@ -28,6 +29,7 @@ public class CrewList {
         }
     }
 
+    //파일 읽어오기
     public List<String> getCrew(String fileName) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
         List<String> crew = new ArrayList<>();
@@ -42,6 +44,7 @@ public class CrewList {
         return crew;
     }
 
+    //랜덤
     public List<List<String>> getShuffledCrew(List<String> crew) {
         List<String> shuffledCrew = Randoms.shuffle(crew);
         List<List<String>> splitShuffledCrew = new ArrayList<>();

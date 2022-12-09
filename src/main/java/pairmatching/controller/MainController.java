@@ -1,48 +1,40 @@
 package pairmatching.controller;
 
-import camp.nextstep.edu.missionutils.Randoms;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import static pairmatching.MainMenu.callLineFunction;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
+import java.util.Arrays;
 import pairmatching.MainMenu;
+import pairmatching.view.InputView;
+import pairmatching.view.OutputView;
 
-public class PairMatchingController {
+public class MainController {
 
+    InputView inputView = new InputView();
+    OutputView outputView = new OutputView();
 
     public void run() throws IOException {
-        MainMenu.printMenu();
-        List<String> backendCrew = getCrew("src/main/resources/backend-crew.md");
-        List<String> frontendCrew = getCrew("src/main/resources/frontend-crew.md");
-        List<List<String>> shuffledBackendCrew = getShuffledCrew(backendCrew);
-        List<List<String>> shuffledFrontendCrew = getShuffledCrew(frontendCrew);
-
-    }
-
-    public List<String> getCrew(String fileName) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
-        List<String> crew = new ArrayList<>();
-        while (true) {
-            String line = bufferedReader.readLine();
-            if (line == null) {
-                break;
-            }
-            crew.add(line);
+        String selectNumber = getSelectMenu();
+        try {
+            validateSelectNumber(selectNumber);
+            callLineFunction(selectNumber);
+        } catch (IllegalArgumentException e) {
+            outputView.printError(e.getMessage());
         }
-        bufferedReader.close();
-        return crew;
     }
 
-    public List<List<String>> getShuffledCrew(List<String> crew) {
-        List<String> shuffledCrew = Randoms.shuffle(crew);
-        final AtomicInteger counter = new AtomicInteger();
-        Collection<List<String>> splitShuffledCrew = shuffledCrew.stream()
-                .collect(Collectors.groupingBy(it -> counter.getAndIncrement() / 2))
-                .values();
-        return new ArrayList<>(splitShuffledCrew);
+
+    //메뉴 선택
+    public String getSelectMenu() {
+        MainMenu.printMenu();
+        return inputView.getInput();
+    }
+
+    //메뉴 유효성 확인
+    public void validateSelectNumber(String selectNumber) {
+        Arrays.stream(MainMenu.values())
+                .filter(number -> number.getSelectNumber().equals(selectNumber))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 입력입니다."));
     }
 }

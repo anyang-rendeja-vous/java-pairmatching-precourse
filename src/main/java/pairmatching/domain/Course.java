@@ -9,4 +9,8 @@ public enum Course {
     Course(String name) {
         this.name = name;
     }
+
+    public String getCourseName() {
+        return name;
+    }
 }
