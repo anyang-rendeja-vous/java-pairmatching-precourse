@@ -8,13 +8,10 @@ import java.util.Map;
 // 특정 미션에 대한 결과
 public class MatchingResults {
 
-    private final Map<Mission, List<Pair>> results = new EnumMap<>(Mission.class);
+    private static final Map<Mission, List<Pair>> results = new EnumMap<>(Mission.class);
 
     public MatchingResults(Mission mission, List<Crew> crews) {
         List<Pair> pairs = createPairs(crews);
-
-        // TODO: mission 에 대한 매칭 결과가 이미 존재하는지 확인
-
         putResult(mission, pairs);
     }
 
@@ -60,5 +57,10 @@ public class MatchingResults {
 
     public List<Pair> getResultsByMission(Mission mission) {
         return results.get(mission);
+    }
+
+    // mission 에 대한 매칭 결과가 이미 존재하는지 확인
+    public static boolean isAlreadyExist(Mission mission) {
+        return results.containsKey(mission);
     }
 }
