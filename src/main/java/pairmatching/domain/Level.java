@@ -9,15 +9,20 @@ import static pairmatching.domain.Mission.PERFORMANCE_IMPROVEMENT;
 import static pairmatching.domain.Mission.SHOPPING_CART;
 import static pairmatching.domain.Mission.SUBWAY_MAP;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum Level {
-    LEVEL1("레벨1", List.of(CAR_RACING, LOTTO, BASEBALL)),
-    LEVEL2("레벨2", List.of(SHOPPING_CART, PAYMENT, SUBWAY_MAP)),
+    LEVEL1("레벨1", Arrays.asList(CAR_RACING, LOTTO, BASEBALL)),
+    LEVEL2("레벨2", Arrays.asList(SHOPPING_CART, PAYMENT, SUBWAY_MAP)),
     LEVEL3("레벨3", null),
-    LEVEL4("레벨4", List.of(PERFORMANCE_IMPROVEMENT, DEPLOY)),
+    LEVEL4("레벨4", Arrays.asList(PERFORMANCE_IMPROVEMENT, DEPLOY)),
     LEVEL5("레벨5", null);
 
+    private static final String PREFIX = "  - ";
+    private static final String SEPARATOR = ": ";
+    private static final String DELIMITER = " | ";
     private String name;
     private List<Mission> missions;
 
@@ -27,4 +32,18 @@ public enum Level {
     }
 
     // 추가 기능 구현
+    public static String reformat() {
+        return Arrays.stream(Level.values())
+                .map(level -> PREFIX + level.name + SEPARATOR + level.getFormattedMissions() + "\n")
+                .collect(Collectors.joining());
+    }
+
+    public String getFormattedMissions() {
+        if (missions == null) {
+            return "";
+        }
+        return missions.stream()
+                .map(Mission::getName)
+                .collect(Collectors.joining(DELIMITER));
+    }
 }
