@@ -10,15 +10,20 @@ import java.util.List;
 
 public class CrewReader {
 
-    public List<String> getShuffledCrew(String location) {
-        List<String> crewNames = getCrewNames(location);
-        return Randoms.shuffle(crewNames); // 섞인 크루 이름 목록
-    }
-
-    private List<String> getCrewNames(String location) {
+    public List<String> getCrewFromFile(String location) {
         List<Character> crewNames = readCrewNames(location); // 파일에서 로드한 크루 이름 목록
         return crewNameToList(crewNames); // 파일에서 로드한 크루 이름 목록
     }
+
+//    public List<String> getCrewFromFile(String location) {
+//        List<String> crewNames = getCrewNames(location);
+//        return Randoms.shuffle(crewNames); // 섞인 크루 이름 목록
+//    }
+
+//    private List<String> getCrewNames(String location) {
+//        List<Character> crewNames = readCrewNames(location); // 파일에서 로드한 크루 이름 목록
+//        return crewNameToList(crewNames); // 파일에서 로드한 크루 이름 목록
+//    }
 
     private List<Character> readCrewNames(String location) {
         List<Character> chars = new ArrayList<>(); // 파일에서 로드한 크루 이름 목록

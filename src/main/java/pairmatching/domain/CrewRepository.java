@@ -1,5 +1,6 @@
 package pairmatching.domain;
 
+import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,5 +26,9 @@ public class CrewRepository {
                 .filter(crew -> crew.getCourse().equals(course))
                 .forEach(resultCrews::add);
         return resultCrews;
+    }
+
+    public static void shuffleCrew() {
+        Randoms.shuffle(crews);
     }
 }

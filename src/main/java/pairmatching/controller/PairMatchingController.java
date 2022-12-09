@@ -50,6 +50,7 @@ public class PairMatchingController {
                 }
 
                 if (wantReMatch) {
+                    CrewRepository.shuffleCrew();
                     // 1. 페어 매칭
                     MatchingResults matchingResults = new MatchingResults(mission,
                             CrewRepository.getCrewsByCourse(course));
@@ -66,9 +67,9 @@ public class PairMatchingController {
 
     private void initialCrews() {
         CrewReader crewReader = new CrewReader();
-        List<String> backendCrews = crewReader.getShuffledCrew(BACKEND_CREW_NAME_LOCATION);
+        List<String> backendCrews = crewReader.getCrewFromFile(BACKEND_CREW_NAME_LOCATION);
         backendCrews.forEach(backendCrew -> CrewRepository.addCrew(new Crew(Course.BACKEND, backendCrew)));
-        List<String> frontendCrews = crewReader.getShuffledCrew(FRONTEND_CREW_NAME_LOCATION);
+        List<String> frontendCrews = crewReader.getCrewFromFile(FRONTEND_CREW_NAME_LOCATION);
         frontendCrews.forEach(frontendCrew -> CrewRepository.addCrew(new Crew(Course.FRONTEND, frontendCrew)));
     }
 }
