@@ -32,7 +32,7 @@ public class PairMatcher implements Controller {
         try {
             List<List<String>> matchedPairs = runPairMatcher(matchingChoice);
             outputView.showMatchedResult(matchedPairs);
-            // pairMatchingRepository.storeMatchedPairs(matchingChoice, matchedPairs);
+            pairMatchingRepository.storeMatchedPairs(matchingChoice, matchedPairs);
         }
         catch (IllegalStateException exception) {
             outputView.printErrorMessage(exception.getMessage());
@@ -41,7 +41,7 @@ public class PairMatcher implements Controller {
 
     private MatchingChoice getMatchingChoice() {
         MatchingChoice matchingChoice = getPairMatchingInput();
-        if (choiceExists(matchingChoice)) {
+        if (pairMatchingRepository.isExistingChoice(matchingChoice)) {
             String choice = getNextStep();
             if (choice.equals(YES)) {
                 return matchingChoice;
@@ -49,10 +49,6 @@ public class PairMatcher implements Controller {
             getMatchingChoice();
         }
         return matchingChoice;
-    }
-
-    private boolean choiceExists(MatchingChoice matchingChoice) {
-        return pairMatchingRepository.isExistingChoice(matchingChoice);
     }
 
     private String getNextStep() {

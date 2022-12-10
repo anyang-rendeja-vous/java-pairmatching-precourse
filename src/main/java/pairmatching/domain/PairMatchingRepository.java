@@ -8,13 +8,16 @@ public class PairMatchingRepository {
 
     public boolean isExistingChoice(MatchingChoice matchingChoice){
         return records.stream()
-                .map(PairMatchingRecord::getMatchingChoice)
-                .anyMatch(matchingChoice::equals);
+                .anyMatch(pairMatchingRecord -> pairMatchingRecord.choiceDuplicates(matchingChoice));
     }
 
     public boolean duplicateExists(MatchingChoice matchingChoice, List<List<String>> matchedPairs) {
         return records.stream()
                 .filter(pairMatchingRecord -> pairMatchingRecord.choiceDuplicates(matchingChoice))
                 .anyMatch(pairMatchingRecord -> pairMatchingRecord.matchingResultDuplicates(matchedPairs));
+    }
+
+    public void storeMatchedPairs(MatchingChoice matchingChoice, List<List<String>> matchedPairs) {
+        records.add(new PairMatchingRecord(matchingChoice, matchedPairs));
     }
 }
