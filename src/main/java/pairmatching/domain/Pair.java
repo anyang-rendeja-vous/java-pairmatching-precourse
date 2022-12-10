@@ -1,16 +1,18 @@
 package pairmatching.domain;
 
-public class Pair {
-    private final Crew crew1;
-    private final Crew crew2;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-    public Pair(Crew crew1, Crew crew2) {
-        this.crew1 = crew1;
-        this.crew2 = crew2;
+public class Pair {
+    private final List<Crew> pairedCrews = new ArrayList<>();
+
+    public Pair(Crew...crews) {
+        pairedCrews.addAll(Arrays.asList(crews));
     }
 
-    // 페어가 순서 상관없이 일치하는지 반환
-    public boolean isEqualTo(Crew crew1, Crew crew2){
-        return (this.crew1.matches(crew1) && this.crew2.matches(crew2)) || (this.crew1.matches(crew2) && this.crew2.matches(crew1));
+    // 페어가 순서 상관없이 일치하는지 check -> set 활용..?!
+    public boolean isEqualTo(){
+        // TODO
     }
 }
