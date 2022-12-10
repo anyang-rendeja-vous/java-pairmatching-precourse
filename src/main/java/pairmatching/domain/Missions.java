@@ -1,35 +1,34 @@
 package pairmatching.domain;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 public enum Missions {
 
-    MISSION_LEVEL_1("### 레벨1", Arrays.asList("자동차경주", "로또", "숫자야구게임")),
-    MISSION_LEVEL_2("### 레벨2", Arrays.asList("장바구니", "결제", "지하철노선도")),
-    MISSION_LEVEL_3("### 레벨3(없음)", Collections.singletonList("")),
-    MISSION_LEVEL_4("### 레벨4", Arrays.asList("성능개선", "배포")),
-    MISSION_LEVEL_5("### 레벨5(없음)", Collections.singletonList(""));
+    CAR_RACING("레벨1", "자동차경주"),
+    LOTTO("레벨1", "로또"),
+    BASEBALL_GAME("레벨1", "숫자야구게임"),
+    SHOPPING_BASKET("레벨2", "장바구니"),
+    PAYMENT("레벨2", "결제"),
+    SUBWAY_MAP("레벨2", "지하철노선도"),
+    PERFORMANCE_IMPROVEMENT("레벨4", "성능개선"),
+    DISTRIBUTE("레벨4", "배포");
 
-    private final String levelName;
-    private final List<String> missionNames;
+    private final String mission;
+    private final String level;
 
-    Missions(String levelName, List<String> missionNames) {
-        this.levelName = levelName;
-        this.missionNames = missionNames;
+    Missions(String level, String mission) {
+        this.level = level;
+        this.mission = mission;
     }
 
-    public String getLevelName() {
-        return levelName;
+    public String getLevel() {
+        return level;
     }
 
-    public List<String> getMissionNames() {
-        return missionNames;
+    public String getMission() {
+        return mission;
     }
 
     @Override
     public String toString() {
-        return missionNames.toString();
+        return mission.toString();
     }
 }
