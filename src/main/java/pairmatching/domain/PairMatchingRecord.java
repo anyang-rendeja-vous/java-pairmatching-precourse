@@ -9,4 +9,13 @@ public class PairMatchingRecord {
     public MatchingChoice getMatchingChoice() {
         return matchingChoice;
     }
+
+    public boolean choiceDuplicates(MatchingChoice matchingChoice) {
+        return this.matchingChoice.choiceDuplicates(matchingChoice);
+    }
+
+    public boolean matchingResultDuplicates(List<List<String>> matchedPairs) {
+        return matchingResult.stream()
+                .anyMatch(pair -> pair.duplicates(matchedPairs));
+    }
 }

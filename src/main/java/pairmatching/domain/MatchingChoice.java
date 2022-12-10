@@ -57,4 +57,12 @@ public class MatchingChoice {
     public Course getCourse() {
         return course;
     }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public boolean choiceDuplicates(MatchingChoice choice){
+        return course == choice.getCourse() && level == choice.getLevel();
+    }
 }
