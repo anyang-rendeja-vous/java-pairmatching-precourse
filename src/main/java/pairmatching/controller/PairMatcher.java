@@ -10,6 +10,9 @@ import pairmatching.ui.InputView;
 import pairmatching.ui.OutputView;
 
 public class PairMatcher implements Controller {
+    private static final String YES ="네";
+    private static final String NO ="아니오";
+    private static final int LIMIT = 3;
 
     private final InputView inputView = new InputView();
     private final OutputView outputView = new OutputView();
@@ -33,9 +36,9 @@ public class PairMatcher implements Controller {
         MatchingChoice matchingChoice = getPairMatchingInput();
         if (choiceExists(matchingChoice)) {
             String choice = getNextStep();
-            if (choice.equals("네"))
+            if (choice.equals(YES))
                 return matchingChoice;
-            if (choice.equals("아니오"))
+            if (choice.equals(NO))
                 getMatchingChoice();
         }
         return matchingChoice;
@@ -66,7 +69,7 @@ public class PairMatcher implements Controller {
 
     private List<List<String>> runPairMatcher(MatchingChoice matchingChoice) {
         int runCount = 0;
-        while (runCount < 3){
+        while (runCount < LIMIT){
             List<String> shuffledCrews = Randoms.shuffle(crews.getMatchingCrews(matchingChoice));
             List<List<String>> matchedPairs = matchPairs(shuffledCrews);
             if (!pairMatchingRepository.duplicateExists(matchingChoice, matchedPairs)) {
@@ -74,7 +77,7 @@ public class PairMatcher implements Controller {
             }
             runCount++;
         }
-        throw new IllegalStateException("페어 매칭 실패 !");
+        throw new IllegalStateException();
     }
 
     private List<List<String>> matchPairs(List<String> shuffledCrews) {
@@ -90,7 +93,7 @@ public class PairMatcher implements Controller {
     }
 
     private int countCrewsLeft(int idx, int size) {
-        if (size - idx > 3) {
+        if (size - idx > LIMIT) {
             return 2;
         }
         return size - idx; // 2 나 3 return
