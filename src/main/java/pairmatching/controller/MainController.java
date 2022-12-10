@@ -2,7 +2,6 @@ package pairmatching.controller;
 
 import static pairmatching.MainMenu.callLineFunction;
 
-import java.io.IOException;
 import java.util.Arrays;
 import pairmatching.MainMenu;
 import pairmatching.view.InputView;
@@ -13,16 +12,20 @@ public class MainController {
     InputView inputView = new InputView();
     OutputView outputView = new OutputView();
 
-    public void run() throws IOException {
-        String selectNumber = getSelectMenu();
-        try {
-            validateSelectNumber(selectNumber);
-            callLineFunction(selectNumber);
-        } catch (IllegalArgumentException e) {
-            outputView.printError(e.getMessage());
+    public void run() {
+        while (true) {
+            String selectNumber = getSelectMenu();
+            if (selectNumber.equals("Q")) {
+                break;
+            }
+            try {
+                validateSelectNumber(selectNumber);
+                callLineFunction(selectNumber);
+            } catch (IllegalArgumentException e) {
+                outputView.printError(e.getMessage());
+            }
         }
     }
-
 
     //메뉴 선택
     public String getSelectMenu() {
