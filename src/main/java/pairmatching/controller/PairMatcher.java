@@ -41,7 +41,7 @@ public class PairMatcher implements Controller {
 
     private MatchingChoice getMatchingChoice() {
         MatchingChoice matchingChoice = getPairMatchingInput();
-        if (pairMatchingRepository.isExistingChoice(matchingChoice)) {
+        if (pairMatchingRepository.isExistingChoice(matchingChoice)) { // TODO: 이미 존재하면 해당 로직 발생해야 하는데 안함 -> fix !
             String choice = getNextStep();
             if (choice.equals(YES)) {
                 return matchingChoice;
