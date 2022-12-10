@@ -45,9 +45,10 @@ public class PairMatcher implements Controller {
         if (pairMatchingRepository.isExistingChoice(matchingChoice)) {
             String choice = getNextStep();
             if (choice.equals(YES)) {
+                pairMatchingRepository.deleteRecord(matchingChoice); // 기존 이력 삭제시키기 - replace 개념 !
                 return matchingChoice;
             }
-            getMatchingChoice();
+            return getMatchingChoice();
         }
         return matchingChoice;
     }

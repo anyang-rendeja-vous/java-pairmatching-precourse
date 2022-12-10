@@ -20,4 +20,8 @@ public class PairMatchingRepository {
     public void storeMatchedPairs(MatchingChoice matchingChoice, List<List<String>> matchedPairs) {
         records.add(new PairMatchingRecord(matchingChoice, matchedPairs));
     }
+
+    public void deleteRecord(MatchingChoice matchingChoice) {
+        records.removeIf(pairMatchingRecord -> pairMatchingRecord.choiceDuplicates(matchingChoice));
+    }
 }
