@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import pairmatching.domain.Course;
+import pairmatching.domain.Crew;
 import pairmatching.domain.CrewRepository;
 import pairmatching.domain.Level;
 import pairmatching.domain.Missions;
@@ -15,11 +16,15 @@ public class PairMatchingController {
 
     InputView inputView = new InputView();
     OutputView outputView = new OutputView();
-    FileController fileController = new FileController();
     CrewRepository crewRepository = new CrewRepository();
 
     public void run() {
-
+        try {
+            inputProcess();
+        } catch (IllegalArgumentException e) {
+            outputView.printError(e.getMessage());
+            inputProcess();
+        }
     }
 
     //과정, 레벨, 미션 입력 과정
@@ -27,9 +32,9 @@ public class PairMatchingController {
         outputView.printInformation();
         List<String> format = getFormat();
         validateFormat(format);
-        List<String> crewNames = fileController.getCrew();
-        List<Pair> crews = crewRepository.getPairs(crewNames);
-        outputView.printPairMatching(crews);
+        List<Crew> crews = crewRepository.getShuffledCrews(format.get(0));
+        List<Pair> pair = crewRepository.getPairs(crews);
+        outputView.printPairMatching(pair);
     }
 
     //과정, 레벨, 미션 입력 반환
@@ -77,8 +82,8 @@ public class PairMatchingController {
     public void validateLevelMissionMatch(String level, String mission) {
         Arrays.stream(Missions.values())
                 .filter(levelElement -> levelElement.getLevel().equals(level))
-                .findAny()
                 .filter(missionElement -> missionElement.getMission().equals(mission))
+                .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("레벨과 미션이 일치하지 않습니다."));
     }
 }
