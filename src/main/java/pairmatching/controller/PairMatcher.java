@@ -13,7 +13,6 @@ import pairmatching.ui.OutputView;
 
 public class PairMatcher implements Controller {
     private static final String YES = "네";
-    private static final String NO = "아니오";
     private static final int LIMIT = 3;
 
     private final InputView inputView = new InputView();
@@ -33,7 +32,8 @@ public class PairMatcher implements Controller {
         try {
             List<List<String>> matchedPairs = runPairMatcher(matchingChoice);
             // outputView.showMatchedResult(matchedPairs);
-        } catch (IllegalStateException exception) {
+        }
+        catch (IllegalStateException exception) {
             outputView.printErrorMessage(exception.getMessage());
         }
     }
@@ -45,9 +45,7 @@ public class PairMatcher implements Controller {
             if (choice.equals(YES)) {
                 return matchingChoice;
             }
-            if (choice.equals(NO)) {
-                getMatchingChoice();
-            }
+            getMatchingChoice();
         }
         return matchingChoice;
     }
