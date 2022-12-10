@@ -1,5 +1,7 @@
 package pairmatching.controller;
 
+import static pairmatching.ui.Messages.PAIR_MATCHING_FAILED;
+
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +12,8 @@ import pairmatching.ui.InputView;
 import pairmatching.ui.OutputView;
 
 public class PairMatcher implements Controller {
-    private static final String YES ="네";
-    private static final String NO ="아니오";
+    private static final String YES = "네";
+    private static final String NO = "아니오";
     private static final int LIMIT = 3;
 
     private final InputView inputView = new InputView();
@@ -28,18 +30,24 @@ public class PairMatcher implements Controller {
     public void execute() {
         inputView.showMatchingMenu();
         MatchingChoice matchingChoice = getMatchingChoice();
-        List<List<String>> matchedPairs = runPairMatcher(matchingChoice);
-        // outputView.showMatchedResult(matchedPairs);
+        try {
+            List<List<String>> matchedPairs = runPairMatcher(matchingChoice);
+            // outputView.showMatchedResult(matchedPairs);
+        } catch (IllegalStateException exception) {
+            outputView.printErrorMessage(exception.getMessage());
+        }
     }
 
     private MatchingChoice getMatchingChoice() {
         MatchingChoice matchingChoice = getPairMatchingInput();
         if (choiceExists(matchingChoice)) {
             String choice = getNextStep();
-            if (choice.equals(YES))
+            if (choice.equals(YES)) {
                 return matchingChoice;
-            if (choice.equals(NO))
+            }
+            if (choice.equals(NO)) {
                 getMatchingChoice();
+            }
         }
         return matchingChoice;
     }
@@ -69,7 +77,7 @@ public class PairMatcher implements Controller {
 
     private List<List<String>> runPairMatcher(MatchingChoice matchingChoice) {
         int runCount = 0;
-        while (runCount < LIMIT){
+        while (runCount < LIMIT) {
             List<String> shuffledCrews = Randoms.shuffle(crews.getMatchingCrews(matchingChoice));
             List<List<String>> matchedPairs = matchPairs(shuffledCrews);
             if (!pairMatchingRepository.duplicateExists(matchingChoice, matchedPairs)) {
@@ -77,13 +85,13 @@ public class PairMatcher implements Controller {
             }
             runCount++;
         }
-        throw new IllegalStateException();
+        throw new IllegalStateException(PAIR_MATCHING_FAILED.getMessage());
     }
 
     private List<List<String>> matchPairs(List<String> shuffledCrews) {
         List<List<String>> matchedResult = new ArrayList<>();
         int idx = 0;
-        while (idx < shuffledCrews.size()-1) {
+        while (idx < shuffledCrews.size() - 1) {
             int leftCrewsCount = countCrewsLeft(idx, shuffledCrews.size());
             List<String> pair = new ArrayList<>(shuffledCrews.subList(idx, idx + leftCrewsCount));
             matchedResult.add(pair);
