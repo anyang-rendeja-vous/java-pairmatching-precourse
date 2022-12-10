@@ -31,7 +31,8 @@ public class PairMatcher implements Controller {
         MatchingChoice matchingChoice = getMatchingChoice();
         try {
             List<List<String>> matchedPairs = runPairMatcher(matchingChoice);
-            // outputView.showMatchedResult(matchedPairs);
+            outputView.showMatchedResult(matchedPairs);
+            // pairMatchingRepository.storeMatchedPairs(matchingChoice, matchedPairs);
         }
         catch (IllegalStateException exception) {
             outputView.printErrorMessage(exception.getMessage());
