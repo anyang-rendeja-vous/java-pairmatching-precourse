@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import pairmatching.domain.Course;
-import pairmatching.domain.CrewList;
+import pairmatching.domain.CrewRepository;
 import pairmatching.domain.Level;
 import pairmatching.domain.Missions;
+import pairmatching.domain.Pair;
 import pairmatching.view.InputView;
 import pairmatching.view.OutputView;
 
@@ -14,7 +15,8 @@ public class PairMatchingController {
 
     InputView inputView = new InputView();
     OutputView outputView = new OutputView();
-    CrewList crewList = new CrewList();
+    FileController fileController = new FileController();
+    CrewRepository crewRepository = new CrewRepository();
 
     public void run() {
 
@@ -25,8 +27,9 @@ public class PairMatchingController {
         outputView.printInformation();
         List<String> format = getFormat();
         validateFormat(format);
-        List<List<String>> crew = crewList.getPair(format.get(0));
-        outputView.printPairMatching(crew);
+        List<String> crewNames = fileController.getCrew();
+        List<Pair> crews = crewRepository.getPairs(crewNames);
+        outputView.printPairMatching(crews);
     }
 
     //과정, 레벨, 미션 입력 반환
@@ -37,9 +40,13 @@ public class PairMatchingController {
 
     //포맷 유효성 확인
     public void validateFormat(List<String> format) {
-        validateCourse(format.get(0));
-        validateLevel(format.get(1));
+        String course = format.get(0);
+        String level = format.get(1);
+        String mission = format.get(2);
+        validateCourse(course);
+        validateLevel(level);
         validateMission(format.get(2));
+        validateLevelMissionMatch(level, mission);
     }
 
     //과정 유효성 확인
@@ -61,8 +68,17 @@ public class PairMatchingController {
     //미션 유효성 확인
     public void validateMission(String inputMission) {
         Arrays.stream(Missions.values())
-                .filter(missions -> missions.getMissionNames().contains(inputMission))
+                .filter(missions -> missions.getMission().contains(inputMission))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 미션입니다."));
+    }
+
+    //레벨, 미션 매칭 유효성 확인
+    public void validateLevelMissionMatch(String level, String mission) {
+        Arrays.stream(Missions.values())
+                .filter(levelElement -> levelElement.getLevel().equals(level))
+                .findAny()
+                .filter(missionElement -> missionElement.getMission().equals(mission))
+                .orElseThrow(() -> new IllegalArgumentException("레벨과 미션이 일치하지 않습니다."));
     }
 }
