@@ -18,11 +18,12 @@ public class PairMatcher implements Controller {
     private final InputView inputView = new InputView();
     private final OutputView outputView = new OutputView();
 
-    private final PairMatchingRepository pairMatchingRepository = new PairMatchingRepository();
+    private final PairMatchingRepository pairMatchingRepository;
     private final Crews crews;
 
-    public PairMatcher(Crews crews) {
+    public PairMatcher(Crews crews, PairMatchingRepository pairMatchingRepository) {
         this.crews = crews;
+        this.pairMatchingRepository = pairMatchingRepository;
     }
 
     @Override
@@ -41,7 +42,7 @@ public class PairMatcher implements Controller {
 
     private MatchingChoice getMatchingChoice() {
         MatchingChoice matchingChoice = getPairMatchingInput();
-        if (pairMatchingRepository.isExistingChoice(matchingChoice)) { // TODO: 이미 존재하면 해당 로직 발생해야 하는데 안함 -> fix !
+        if (pairMatchingRepository.isExistingChoice(matchingChoice)) {
             String choice = getNextStep();
             if (choice.equals(YES)) {
                 return matchingChoice;

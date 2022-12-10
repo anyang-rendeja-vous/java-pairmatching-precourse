@@ -1,8 +1,9 @@
 package pairmatching.controller;
 
 import java.util.Arrays;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import pairmatching.domain.Crews;
+import pairmatching.domain.PairMatchingRepository;
 
 public enum MainControls {
     PAIR_MATCHING("1", PairMatcher::new),
@@ -11,15 +12,15 @@ public enum MainControls {
     QUIT("Q", ProgramFinish::new);
 
     private final String choice;
-    private final Function<Crews, Controller> controllerMaker;
+    private final BiFunction<Crews, PairMatchingRepository, Controller> controllerMaker;
 
-    MainControls(String choice, Function<Crews, Controller> controllerMaker) {
+    MainControls(String choice, BiFunction<Crews, PairMatchingRepository, Controller> controllerMaker) {
         this.choice = choice;
         this.controllerMaker = controllerMaker;
     }
 
-    public Controller generatedController(Crews crews) {
-        return controllerMaker.apply(crews);
+    public Controller generatedController(Crews crews, PairMatchingRepository pairMatchingRepository) {
+        return controllerMaker.apply(crews, pairMatchingRepository);
     }
 
     public static MainControls getMatchingControls(String choice) {

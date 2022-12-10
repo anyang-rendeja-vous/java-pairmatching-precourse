@@ -1,13 +1,16 @@
 package pairmatching.controller;
 
 import pairmatching.domain.Crews;
+import pairmatching.domain.PairMatchingRepository;
 
 public class PairsInitializer implements Controller {
 
     private final Crews crews;
+    private final PairMatchingRepository pairMatchingRepository;
 
-    public PairsInitializer(Crews crews) {
+    public PairsInitializer(Crews crews, PairMatchingRepository pairMatchingRepository) {
         this.crews = crews;
+        this.pairMatchingRepository = pairMatchingRepository;
     }
 
     @Override

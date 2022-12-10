@@ -8,6 +8,7 @@ import static pairmatching.ui.Messages.INVALID_MISSION;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MatchingChoice {
     private static final int INPUT_SIZE = 3;
@@ -62,7 +63,11 @@ public class MatchingChoice {
         return level;
     }
 
-    public boolean choiceDuplicates(MatchingChoice choice){
-        return course == choice.getCourse() && level == choice.getLevel();
+    public String getMission() {
+        return mission;
+    }
+
+    public boolean isDuplicated(MatchingChoice choice) {
+        return this.course == choice.getCourse() && this.level == choice.getLevel() && this.mission.equals(choice.getMission());
     }
 }

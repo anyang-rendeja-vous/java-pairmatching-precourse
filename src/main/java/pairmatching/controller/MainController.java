@@ -5,6 +5,7 @@ import static pairmatching.controller.ControllerMapper.executeByUserChoice;
 import java.io.FileNotFoundException;
 import pairmatching.domain.Crews;
 import pairmatching.DataLoader;
+import pairmatching.domain.PairMatchingRepository;
 import pairmatching.ui.InputView;
 import pairmatching.ui.OutputView;
 
@@ -21,19 +22,20 @@ public class MainController {
 
     public void execute() {
         Crews crews = loadCrewNames();
+        PairMatchingRepository pairMatchingRepository = new PairMatchingRepository();
         while (isContinue){
-            Controller controller = getMatchingController(crews);
+            Controller controller = getMatchingController(crews, pairMatchingRepository);
             controller.execute();
         }
     }
 
-    private Controller getMatchingController(Crews crews) {
+    private Controller getMatchingController(Crews crews, PairMatchingRepository pairMatchingRepository) {
         try {
             String choice = inputView.inputMenuChoice();
-            return executeByUserChoice(choice, crews);
+            return executeByUserChoice(choice, crews, pairMatchingRepository);
         } catch (IllegalArgumentException exception) {
             outputView.printErrorMessage(exception.getMessage());
-            return getMatchingController(crews);
+            return getMatchingController(crews, pairMatchingRepository);
         }
     }
 

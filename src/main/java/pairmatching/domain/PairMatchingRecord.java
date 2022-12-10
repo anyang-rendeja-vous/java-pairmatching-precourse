@@ -16,7 +16,7 @@ public class PairMatchingRecord {
     }
 
     public boolean choiceDuplicates(MatchingChoice matchingChoice) {
-        return this.matchingChoice.choiceDuplicates(matchingChoice);
+        return this.matchingChoice.isDuplicated(matchingChoice);
     }
 
     public boolean matchingResultDuplicates(List<List<String>> matchedPairs) {
