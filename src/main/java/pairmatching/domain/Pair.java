@@ -8,11 +8,11 @@ public class Pair {
 
     private final List<Crew> pair;
 
-    public Pair(List<Crew> pairs) {
-        this.pair = pairs;
+    public Pair(List<Crew> pair) {
+        this.pair = pair;
     }
 
-    public List<Crew> getPairs() {
+    public List<Crew> getPair() {
         return Collections.unmodifiableList(pair);
     }
 
