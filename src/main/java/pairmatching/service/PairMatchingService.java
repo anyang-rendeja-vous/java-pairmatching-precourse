@@ -10,6 +10,7 @@ import pairmatching.domain.MatchingChoice;
 import pairmatching.domain.PairMatchingRepository;
 
 public class PairMatchingService {
+    private boolean isRunning = true;
     private static final int LIMIT = 3;
 
     private final PairMatchingRepository pairMatchingRepository = new PairMatchingRepository();
@@ -66,5 +67,13 @@ public class PairMatchingService {
             return 2;
         }
         return size - idx; // 2 나 3 return
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void stopRunning() {
+        isRunning = false;
     }
 }

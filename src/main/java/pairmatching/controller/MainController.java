@@ -13,8 +13,6 @@ public class MainController {
     private final InputView inputView;
     private final OutputView outputView;
 
-    public static boolean isContinue = true;
-
     public MainController() {
         inputView = new InputView();
         outputView = new OutputView();
@@ -22,7 +20,7 @@ public class MainController {
 
     public void execute() {
         PairMatchingService pairMatchingService = new PairMatchingService(loadCrewNames());
-        while (isContinue){
+        while (pairMatchingService.isRunning()){
             Controller controller = getMatchingController(pairMatchingService);
             controller.execute();
         }
