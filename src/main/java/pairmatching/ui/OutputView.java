@@ -5,7 +5,7 @@ import java.util.StringJoiner;
 
 public class OutputView {
     public void printErrorMessage(String message) {
-        System.out.println("[ERROR]: " + message);
+        System.out.println("[ERROR]: " + message + '\n');
     }
 
     public void showMatchedResult(List<List<String>> matchedPairs) {
