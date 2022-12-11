@@ -58,7 +58,7 @@ public class PairMatcher implements Controller {
         try {
             String input = inputView.inputPairMatching();
             return new MatchingChoice(input);
-        } catch (Exception exception) {
+        } catch (IllegalArgumentException exception) {
             outputView.printErrorMessage(exception.getMessage());
             return getPairMatchingInput();
         }
