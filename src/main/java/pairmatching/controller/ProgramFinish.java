@@ -5,6 +5,7 @@ import pairmatching.domain.PairMatchingRepository;
 
 public class ProgramFinish implements Controller {
 
+    // TODO: refactor redundant fields (프로그램 종료와 상관없음)
     private final Crews crews;
     private final PairMatchingRepository pairMatchingRepository;
 
