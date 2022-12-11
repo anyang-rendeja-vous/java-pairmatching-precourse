@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.StringJoiner;
 
 public class OutputView {
+    private static final String INITIALIZED = "초기화 되었습니다.";
+
     public void printErrorMessage(String message) {
         System.out.println("[ERROR]: " + message + '\n');
     }
@@ -16,5 +18,9 @@ public class OutputView {
             System.out.println(joiner.toString());
         }
         System.out.println();
+    }
+
+    public void printCleared() {
+        System.out.println('\n' + INITIALIZED + '\n');
     }
 }

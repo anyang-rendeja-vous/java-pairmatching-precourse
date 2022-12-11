@@ -1,8 +1,11 @@
 package pairmatching.controller;
 
 import pairmatching.service.PairMatchingService;
+import pairmatching.ui.OutputView;
 
 public class PairsInitializer implements Controller {
+
+    private final OutputView outputView = new OutputView();
 
     private final PairMatchingService pairMatchingService;
 
@@ -12,5 +15,7 @@ public class PairsInitializer implements Controller {
 
     @Override
     public void execute() {
+        pairMatchingService.initialize();
+        outputView.printCleared();
     }
 }

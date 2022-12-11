@@ -34,4 +34,8 @@ public class PairMatchingRepository {
                 .findAny()
                 .orElseThrow(() -> new IllegalStateException(NON_EXISTENT_MATCH.getMessage()));
     }
+
+    public void clear() {
+        records.clear();
+    }
 }

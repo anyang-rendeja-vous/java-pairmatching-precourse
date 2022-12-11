@@ -80,4 +80,8 @@ public class PairMatchingService {
     public List<List<String>> readMatchingResult(MatchingChoice matchingChoice) {
         return pairMatchingRepository.readMatchingResult(matchingChoice);
     }
+
+    public void initialize() {
+        pairMatchingRepository.clear();
+    }
 }
