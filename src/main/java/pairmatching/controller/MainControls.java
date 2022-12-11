@@ -1,5 +1,7 @@
 package pairmatching.controller;
 
+import static pairmatching.ui.Messages.INVALID_MAIN_CHOICE;
+
 import java.util.Arrays;
 import java.util.function.BiFunction;
 import pairmatching.domain.Crews;
@@ -27,7 +29,7 @@ public enum MainControls {
         return Arrays.stream(MainControls.values())
                 .filter(controls -> controls.choiceMatches(choice))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("error!"));
+                .orElseThrow(() -> new IllegalArgumentException(INVALID_MAIN_CHOICE.getMessage()));
     }
 
     public boolean choiceMatches(String choice) {
