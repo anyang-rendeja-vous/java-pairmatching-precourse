@@ -4,6 +4,7 @@ import static pairmatching.ui.Messages.NON_EXISTENT_LEVEL;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public enum Level {
     LEVEL1("레벨1", Arrays.asList("자동차경주", "로또", "숫자야구게임")),
@@ -39,5 +40,17 @@ public enum Level {
     private boolean missionMatches(String mission) {
         return missions.stream()
                 .anyMatch(m -> m.equals(mission));
+    }
+
+    public static List<Level> getAllLevels(){
+        return Arrays.asList(Level.values());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Optional<List<String>> getMissionsByLevel() {
+        return Optional.ofNullable(missions);
     }
 }

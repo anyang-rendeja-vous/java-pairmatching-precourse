@@ -3,6 +3,8 @@ package pairmatching.domain;
 import static pairmatching.ui.Messages.NON_EXISTENT_COURSE;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public enum Course {
     BACKEND("백엔드"),
@@ -14,7 +16,7 @@ public enum Course {
         this.name = name;
     }
 
-    public static Course findMatchingCourse(String courseInput){
+    public static Course findMatchingCourse(String courseInput) {
         return Arrays.stream(Course.values())
                 .filter(course -> course.hasCourse(courseInput))
                 .findAny()
@@ -25,5 +27,13 @@ public enum Course {
         return this.name.equals(courseInput);
     }
 
+    public static List<String> getAllCourses() {
+        return Arrays.stream(Course.values())
+                .map(Course::getName)
+                .collect(Collectors.toList());
+    }
 
+    private String getName() {
+        return name;
+    }
 }
