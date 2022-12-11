@@ -1,5 +1,9 @@
 package pairmatching.controller;
 
+import static pairmatching.domain.PairRepository.addPair;
+import static pairmatching.domain.PairRepository.hasPairs;
+import static pairmatching.domain.PairRepository.resetPairRepository;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +39,7 @@ public class PairMatchingController {
         List<Crew> crews = crewRepository.getShuffledCrews(format.get(0));
         List<Pair> pair = crewRepository.getPairs(crews);
         outputView.printPairMatching(pair);
+        addPair(format, pair);
     }
 
     //과정, 레벨, 미션 입력 반환
@@ -85,5 +90,13 @@ public class PairMatchingController {
                 .filter(missionElement -> missionElement.getMission().equals(mission))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("레벨과 미션이 일치하지 않습니다."));
+    }
+
+    public void resetPairs() {
+        if (!hasPairs()) {
+            throw new IllegalArgumentException("페어가 존재하지 않습니다.");
+        }
+        resetPairRepository();
+        outputView.printResetPairs();
     }
 }

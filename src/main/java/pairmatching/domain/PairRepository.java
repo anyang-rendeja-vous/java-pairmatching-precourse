@@ -5,29 +5,35 @@ import java.util.List;
 
 public class PairRepository {
 
-    private final LinkedHashMap<String, List<Pair>> backendPairs = new LinkedHashMap<String, List<Pair>>();
-    private final LinkedHashMap<String, List<Pair>> frontendPairs = new LinkedHashMap<String, List<Pair>>();
+    private static final LinkedHashMap<String, List<Pair>> backendPairs = new LinkedHashMap<>();
+    private static final LinkedHashMap<String, List<Pair>> frontendPairs = new LinkedHashMap<>();
 
-    public void resetPairRepository() {
+    public static void resetPairRepository() {
         backendPairs.clear();
         frontendPairs.clear();
     }
 
     //페어 리스트 추가
-    public void addPair(List<String> format, List<Pair> pairs) {
+    public static void addPair(List<String> format, List<Pair> pairs) {
         if (format.get(0).equals(Course.BACKEND.getCourseName())) {
             addBackendPair(format.get(2), pairs);
         }
-        addFrontendPair(format.get(2), pairs);
+        if (format.get(0).equals(Course.FRONTEND.getCourseName())) {
+            addFrontendPair(format.get(2), pairs);
+        }
     }
 
     //백엔드 페어 리스트 추가
-    private void addBackendPair(String mission, List<Pair> pairs) {
+    private static void addBackendPair(String mission, List<Pair> pairs) {
         backendPairs.put(mission, pairs);
     }
 
     //프론트엔드 페어 리스트 추가
-    private void addFrontendPair(String mission, List<Pair> pairs) {
+    private static void addFrontendPair(String mission, List<Pair> pairs) {
         frontendPairs.put(mission, pairs);
+    }
+
+    public static boolean hasPairs() {
+        return !backendPairs.isEmpty() || !frontendPairs.isEmpty();
     }
 }
