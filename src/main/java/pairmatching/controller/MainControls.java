@@ -3,9 +3,8 @@ package pairmatching.controller;
 import static pairmatching.ui.Messages.INVALID_MAIN_CHOICE;
 
 import java.util.Arrays;
-import java.util.function.BiFunction;
-import pairmatching.domain.Crews;
-import pairmatching.domain.PairMatchingRepository;
+import java.util.function.Function;
+import pairmatching.service.PairMatchingService;
 
 public enum MainControls {
     PAIR_MATCHING("1", PairMatcher::new),
@@ -14,15 +13,15 @@ public enum MainControls {
     QUIT("Q", ProgramFinish::new);
 
     private final String choice;
-    private final BiFunction<Crews, PairMatchingRepository, Controller> controllerMaker;
+    private final Function<PairMatchingService, Controller> controllerMaker;
 
-    MainControls(String choice, BiFunction<Crews, PairMatchingRepository, Controller> controllerMaker) {
+    MainControls(String choice, Function<PairMatchingService, Controller> controllerMaker) {
         this.choice = choice;
         this.controllerMaker = controllerMaker;
     }
 
-    public Controller generatedController(Crews crews, PairMatchingRepository pairMatchingRepository) {
-        return controllerMaker.apply(crews, pairMatchingRepository);
+    public Controller generatedController(PairMatchingService pairMatchingService) {
+        return controllerMaker.apply(pairMatchingService);
     }
 
     public static MainControls getMatchingControls(String choice) {

@@ -1,16 +1,13 @@
 package pairmatching.controller;
 
-import pairmatching.domain.Crews;
-import pairmatching.domain.PairMatchingRepository;
+import pairmatching.service.PairMatchingService;
 
 public class PairsInitializer implements Controller {
 
-    private final Crews crews;
-    private final PairMatchingRepository pairMatchingRepository;
+    private final PairMatchingService pairMatchingService;
 
-    public PairsInitializer(Crews crews, PairMatchingRepository pairMatchingRepository) {
-        this.crews = crews;
-        this.pairMatchingRepository = pairMatchingRepository;
+    public PairsInitializer(PairMatchingService pairMatchingService) {
+        this.pairMatchingService = pairMatchingService;
     }
 
     @Override

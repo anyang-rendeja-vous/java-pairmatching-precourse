@@ -1,17 +1,13 @@
 package pairmatching.controller;
 
-import pairmatching.domain.Crews;
-import pairmatching.domain.PairMatchingRepository;
+import pairmatching.service.PairMatchingService;
 
 public class ProgramFinish implements Controller {
 
-    // TODO: refactor redundant fields (프로그램 종료와 상관없음)
-    private final Crews crews;
-    private final PairMatchingRepository pairMatchingRepository;
+    private final PairMatchingService pairMatchingService;
 
-    public ProgramFinish(Crews crews, PairMatchingRepository pairMatchingRepository) {
-        this.crews = crews;
-        this.pairMatchingRepository = pairMatchingRepository;
+    public ProgramFinish(PairMatchingService pairMatchingService) {
+        this.pairMatchingService = pairMatchingService;
     }
 
     @Override
