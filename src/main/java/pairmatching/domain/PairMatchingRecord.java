@@ -2,6 +2,7 @@ package pairmatching.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PairMatchingRecord {
     private final MatchingChoice matchingChoice;
@@ -26,5 +27,11 @@ public class PairMatchingRecord {
     public boolean matchingResultDuplicates(List<List<String>> matchedPairs) {
         return matchingResult.stream()
                 .anyMatch(pair -> pair.duplicates(matchedPairs));
+    }
+
+    public List<List<String>> getRawPairsData(){
+        return matchingResult.stream()
+                .map(Pair::getRawPairs)
+                .collect(Collectors.toList());
     }
 }

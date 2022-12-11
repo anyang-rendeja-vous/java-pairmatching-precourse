@@ -1,7 +1,6 @@
 package pairmatching.domain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,5 +21,11 @@ public class Pair {
                 .collect(Collectors.toSet());
         return crews.stream()
                 .anyMatch(crew -> pairs.equals(new HashSet<>(crew)));
+    }
+
+    public List<String> getRawPairs() {
+        return pairedCrews.stream()
+                .map(Crew::getName)
+                .collect(Collectors.toList());
     }
 }

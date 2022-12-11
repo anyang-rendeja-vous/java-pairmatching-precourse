@@ -8,7 +8,6 @@ import static pairmatching.ui.Messages.INVALID_MISSION;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class MatchingChoice {
     private static final int INPUT_SIZE = 3;
@@ -26,9 +25,9 @@ public class MatchingChoice {
         initialize(inputs);
     }
 
-    private List<String> getParsedInput(String choiceInput) throws IllegalArgumentException{
+    private List<String> getParsedInput(String choiceInput) throws IllegalArgumentException {
         List<String> inputs = Arrays.asList(choiceInput.split(","));
-        if (inputs.size() != INPUT_SIZE){
+        if (inputs.size() != INPUT_SIZE) {
             throw new IllegalArgumentException(INVALID_INPUT_STRUCT.getMessage());
         }
         return inputs;
@@ -49,7 +48,7 @@ public class MatchingChoice {
     }
 
     private void initMission(Level level, String mission) {
-        if (!isValidatedMission(level, mission)){
+        if (!isValidatedMission(level, mission)) {
             throw new IllegalArgumentException(INVALID_MISSION.getMessage());
         }
         this.mission = mission;
@@ -68,7 +67,8 @@ public class MatchingChoice {
     }
 
     public boolean isDuplicated(MatchingChoice choice) {
-        return this.course == choice.getCourse() && this.level == choice.getLevel() && this.mission.equals(choice.getMission());
+        return this.course == choice.getCourse() && this.level == choice.getLevel() && this.mission
+                .equals(choice.getMission());
     }
 
     public boolean isDuplicated(Course course, Level level) {

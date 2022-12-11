@@ -76,4 +76,8 @@ public class PairMatchingService {
     public void stopRunning() {
         isRunning = false;
     }
+
+    public List<List<String>> readMatchingResult(MatchingChoice matchingChoice) {
+        return pairMatchingRepository.readMatchingResult(matchingChoice);
+    }
 }
