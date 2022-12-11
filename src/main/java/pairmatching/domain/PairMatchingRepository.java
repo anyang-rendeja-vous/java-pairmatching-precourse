@@ -13,7 +13,7 @@ public class PairMatchingRepository {
 
     public boolean duplicateExists(MatchingChoice matchingChoice, List<List<String>> matchedPairs) {
         return records.stream()
-                .filter(pairMatchingRecord -> pairMatchingRecord.choiceDuplicates(matchingChoice))
+                .filter(pairMatchingRecord -> pairMatchingRecord.checkCourseAndLevel(matchingChoice))
                 .anyMatch(pairMatchingRecord -> pairMatchingRecord.matchingResultDuplicates(matchedPairs));
     }
 

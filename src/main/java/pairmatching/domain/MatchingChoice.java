@@ -70,4 +70,8 @@ public class MatchingChoice {
     public boolean isDuplicated(MatchingChoice choice) {
         return this.course == choice.getCourse() && this.level == choice.getLevel() && this.mission.equals(choice.getMission());
     }
+
+    public boolean isDuplicated(Course course, Level level) {
+        return this.course == course && this.level == level;
+    }
 }

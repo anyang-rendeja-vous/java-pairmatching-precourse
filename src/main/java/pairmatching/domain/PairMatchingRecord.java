@@ -15,6 +15,10 @@ public class PairMatchingRecord {
                 ));
     }
 
+    public boolean checkCourseAndLevel(MatchingChoice matchingChoice){
+        return this.matchingChoice.isDuplicated(matchingChoice.getCourse(), matchingChoice.getLevel());
+    }
+
     public boolean choiceDuplicates(MatchingChoice matchingChoice) {
         return this.matchingChoice.isDuplicated(matchingChoice);
     }
