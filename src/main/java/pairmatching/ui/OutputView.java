@@ -9,10 +9,12 @@ public class OutputView {
     }
 
     public void showMatchedResult(List<List<String>> matchedPairs) {
+        System.out.println();
         for (List<String> matchedPair : matchedPairs) {
             StringJoiner joiner = new StringJoiner(" : ");
             matchedPair.forEach(joiner::add);
             System.out.println(joiner.toString());
         }
+        System.out.println();
     }
 }

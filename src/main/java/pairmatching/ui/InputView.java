@@ -32,7 +32,7 @@ public class InputView {
     }
 
     public String inputPairMatching() {
-        System.out.println('\n' + CHOOSE_INFOS_OPENING);
+        System.out.println(CHOOSE_INFOS_OPENING);
         return getUserInput();
     }
 
