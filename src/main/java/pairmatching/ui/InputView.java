@@ -19,6 +19,9 @@ public class InputView {
             + "네 | 아니오";
     private static final String YES_NO = "네|아니오";
 
+    private static final String COURSE_HEADER = "과정: ";
+    private static final String MISSION_HEADER = "미션:";
+
     public String inputMenuChoice() {
         System.out.println(CHOOSE_MENU_OPENING);
         System.out.println(MAIN_MENU);
@@ -34,7 +37,7 @@ public class InputView {
 
     private void printCourses() {
         StringBuilder builder = new StringBuilder();
-        builder.append("과정: ");
+        builder.append(COURSE_HEADER);
         StringJoiner joiner = new StringJoiner(" | ");
         for (String course : getAllCourses()) {
             joiner.add(course);
@@ -43,7 +46,7 @@ public class InputView {
     }
 
     private void printLevels() {
-        System.out.println("미션:");
+        System.out.println(MISSION_HEADER);
         for (Level level : getAllLevels()) {
             printMissions(level);
         }
