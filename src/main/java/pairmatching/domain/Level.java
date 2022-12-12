@@ -13,8 +13,8 @@ public enum Level {
     LEVEL4("레벨4", Arrays.asList("성능개선", "배포")),
     LEVEL5("레벨5", null);
 
-    private String name;
-    private List<String> missions;
+    private final String name;
+    private final List<String> missions;
 
     Level(String name, List<String> missions) {
         this.name = name;

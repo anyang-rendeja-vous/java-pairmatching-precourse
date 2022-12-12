@@ -9,18 +9,6 @@ public class Crew {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Crew : " +
-                "course = " + course +
-                ", name = '" + name + '\'' +
-                '}';
-    }
-
-    public boolean matches(Crew crew) {
-        return this.equals(crew);
-    }
-
     public boolean takesSameCourse(Course course) {
         return this.course == course;
     }
