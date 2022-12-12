@@ -3,6 +3,7 @@ package pairmatching.controller;
 import static pairmatching.domain.PairRepository.addPair;
 import static pairmatching.domain.PairRepository.hasPairs;
 import static pairmatching.domain.PairRepository.resetPairRepository;
+import static pairmatching.domain.PairRepository.validateMatchingHistory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,10 +22,13 @@ public class PairMatchingController {
     InputView inputView = new InputView();
     OutputView outputView = new OutputView();
     CrewRepository crewRepository = new CrewRepository();
+    private int count = 0;
 
     public void run() {
+        outputView.printInformation();
         try {
-            inputProcess();
+            List<String> format = inputProcess();
+            makePair(format.get(0), format.get(1));
         } catch (IllegalArgumentException e) {
             outputView.printError(e.getMessage());
             inputProcess();
@@ -32,14 +36,11 @@ public class PairMatchingController {
     }
 
     //과정, 레벨, 미션 입력 과정
-    public void inputProcess() {
-        outputView.printInformation();
+    public List<String> inputProcess() {
+        outputView.printMatchingProcess();
         List<String> format = getFormat();
         validateFormat(format);
-        List<Crew> crews = crewRepository.getShuffledCrews(format.get(0));
-        List<Pair> pair = crewRepository.getPairs(crews);
-        outputView.printPairMatching(pair);
-        addPair(format, pair);
+        return format;
     }
 
     //과정, 레벨, 미션 입력 반환
@@ -55,7 +56,7 @@ public class PairMatchingController {
         String mission = format.get(2);
         validateCourse(course);
         validateLevel(level);
-        validateMission(format.get(2));
+        validateMission(mission);
         validateLevelMissionMatch(level, mission);
     }
 
@@ -92,11 +93,50 @@ public class PairMatchingController {
                 .orElseThrow(() -> new IllegalArgumentException("레벨과 미션이 일치하지 않습니다."));
     }
 
+    public void makePair(String course, String level) {
+        List<Crew> crews = crewRepository.getShuffledCrews(course);
+        List<Pair> pair = crewRepository.getPairs(crews);
+        if (hasPairs() && !validatePair(course, level, pair)) {
+            count++;
+            selectRematching(course, level);
+        }
+        outputView.printPairMatching(pair);
+        addPair(course, level, pair);
+    }
+
     public void resetPairs() {
         if (!hasPairs()) {
             throw new IllegalArgumentException("페어가 존재하지 않습니다.");
         }
         resetPairRepository();
         outputView.printResetPairs();
+    }
+
+    public boolean validatePair(String course, String level, List<Pair> pairs) {
+        return validateMatchingHistory(course, level, pairs);
+    }
+
+    public void selectRematching(String course, String level) {
+        outputView.printNotificationMessage("매칭 정보가 있습니다. 다시 매칭하겠습니까?");
+        outputView.printNotificationMessage("네 | 아니오");
+        String input = inputView.getInput();
+        try {
+            validateSelectRematching(input);
+        } catch (IllegalArgumentException e) {
+            outputView.printError(e.getMessage());
+            selectRematching(course, level);
+        }
+        if (input.equals("네")) {
+            makePair(course, level);
+        }
+        if (input.equals("아니오")) {
+            inputProcess();
+        }
+    }
+
+    public void validateSelectRematching(String input) {
+        if (!input.equals("네") && !input.equals("아니오")) {
+            throw new IllegalArgumentException("네, 아니오만 입력 가능합니다.");
+        }
     }
 }
