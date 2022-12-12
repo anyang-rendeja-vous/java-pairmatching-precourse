@@ -10,6 +10,9 @@ import pairmatching.domain.Crew;
 import pairmatching.domain.Crews;
 
 public class DataLoader {
+    private static final String BACKEND_FILE_PATH = "src/main/resources/backend-crew.md";
+    private static final String FRONTEND_FILE_PATH = "src/main/resources/frontend-crew.md";
+
     private final Crews crews;
 
     public DataLoader() {
@@ -42,21 +45,23 @@ public class DataLoader {
 
     private List<String> loadBackendCrews() throws FileNotFoundException {
         List<String> backendCrews = new ArrayList<>();
-        Scanner scanner = new Scanner(new File("src/main/resources/backend-crew.md"));
+        Scanner scanner = new Scanner(new File(BACKEND_FILE_PATH));
         while (scanner.hasNextLine()) {
             String name = scanner.nextLine();
             backendCrews.add(name);
         }
+        scanner.close();
         return backendCrews;
     }
 
     private List<String> loadFrontendCrews() throws FileNotFoundException {
         List<String> frontendCrews = new ArrayList<>();
-        Scanner scanner = new Scanner(new File("src/main/resources/frontend-crew.md"));
+        Scanner scanner = new Scanner(new File(FRONTEND_FILE_PATH));
         while (scanner.hasNextLine()) {
             String name = scanner.nextLine();
             frontendCrews.add(name);
         }
+        scanner.close();
         return frontendCrews;
     }
 
