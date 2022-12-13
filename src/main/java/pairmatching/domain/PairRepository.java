@@ -1,73 +1,77 @@
 package pairmatching.domain;
 
+import static pairmatching.controller.PairMatchingController.course;
+import static pairmatching.controller.PairMatchingController.level;
+import static pairmatching.controller.PairMatchingController.mission;
+
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class PairRepository {
 
-    public static final LinkedHashMap<String, List<Pair>> backendPairs = new LinkedHashMap<>();
-    public static final LinkedHashMap<String, List<Pair>> frontendPairs = new LinkedHashMap<>();
+    public static final LinkedHashMap<String, List<Pair>> backendLevelPairs = new LinkedHashMap<>();
+    public static final LinkedHashMap<String, List<Pair>> frontendLevelPairs = new LinkedHashMap<>();
+    public static final LinkedHashMap<String, List<Pair>> backendMissionPairs = new LinkedHashMap<>();
+    public static final LinkedHashMap<String, List<Pair>> frontendMissionPairs = new LinkedHashMap<>();
 
     public static void resetPairRepository() {
-        backendPairs.clear();
-        frontendPairs.clear();
-    }
-
-    public static boolean isEmptyPairs(String course) {
-        if (course.equals(Course.BACKEND.getCourseName())) {
-            return backendPairs.size() == 0;
-        }
-        return frontendPairs.size() == 0;
+        backendLevelPairs.clear();
+        frontendLevelPairs.clear();
+        backendMissionPairs.clear();
+        frontendMissionPairs.clear();
     }
 
     //페어 리스트 추가
-    public static void addPair(String course, String level, List<Pair> pairs) {
+    public static void addPair(List<Pair> pairs) {
         if (course.equals(Course.BACKEND.getCourseName())) {
-            addBackendPair(level, pairs);
+            addBackendPair(pairs);
         }
         if (course.equals(Course.FRONTEND.getCourseName())) {
-            addFrontendPair(level, pairs);
+            addFrontendPair(pairs);
         }
     }
 
     //백엔드 페어 리스트 추가
-    private static void addBackendPair(String level, List<Pair> pairs) {
-        if (backendPairs.get(level) != null) {
-            backendPairs.get(level).addAll(pairs);
+    private static void addBackendPair(List<Pair> pairs) {
+        if (backendLevelPairs.get(level) != null) {
+            backendLevelPairs.get(level).addAll(pairs);
         }
-        backendPairs.putIfAbsent(level, pairs);
+        backendLevelPairs.putIfAbsent(level, pairs);
+        backendMissionPairs.put(mission, pairs);
     }
 
     //프론트엔드 페어 리스트 추가
-    private static void addFrontendPair(String level, List<Pair> pairs) {
-        frontendPairs.put(level, pairs);
+    private static void addFrontendPair(List<Pair> pairs) {
+        if (frontendLevelPairs.get(level) != null) {
+            frontendLevelPairs.get(level).addAll(pairs);
+        }
+        frontendLevelPairs.putIfAbsent(level, pairs);
+        frontendMissionPairs.put(mission, pairs);
     }
 
     public static boolean hasPairs() {
-        return !backendPairs.isEmpty() || !frontendPairs.isEmpty();
+        return !backendLevelPairs.isEmpty() || !frontendLevelPairs.isEmpty();
     }
 
-    public static boolean validateMatchingHistory(String course, String level, List<Pair> pairs) {
+    public static boolean validateMatchingHistory(List<Pair> pairs) {
         if (course.equals(Course.BACKEND.getCourseName())) {
-            return validateBackendPairs(level, pairs);
+            return validateBackendPairs(pairs);
         }
-        return validateFrontendPairs(level, pairs);
+        return validateFrontendPairs(pairs);
     }
 
-    private static boolean validateBackendPairs(String level, List<Pair> pairs) {
+    private static boolean validateBackendPairs(List<Pair> pairs) {
         for (Pair pair : pairs) {
-            if (backendPairs.get(level).stream().anyMatch(name -> name.toString().equals(pair.toString()))) {
+            if (backendLevelPairs.get(level).stream().anyMatch(name -> name.toString().equals(pair.toString()))) {
                 return false;
             }
         }
         return true;
     }
 
-    private static boolean validateFrontendPairs(String level, List<Pair> pairs) {
+    private static boolean validateFrontendPairs(List<Pair> pairs) {
         for (Pair pair : pairs) {
-            if (frontendPairs.get(level).stream().anyMatch(name -> name.toString().equals(pair.toString()))) {
+            if (frontendLevelPairs.get(level).stream().anyMatch(name -> name.toString().equals(pair.toString()))) {
                 return false;
             }
         }
