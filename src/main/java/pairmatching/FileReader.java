@@ -2,15 +2,16 @@ package pairmatching.controller;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import pairmatching.domain.Course;
 import pairmatching.domain.Crew;
+import pairmatching.domain.Pair;
 import pairmatching.view.OutputView;
 
-public class FileController {
+public class FileReader {
 
     OutputView outputView = new OutputView();
 
@@ -20,7 +21,7 @@ public class FileController {
     //파일 읽기
     public List<Crew> readFile(Course course, String fileAddress) throws IOException {
         File file = new File(fileAddress);
-        FileReader fileReader = new FileReader(file);
+        java.io.FileReader fileReader = new java.io.FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         List<Crew> crewNames = new ArrayList<>();
         String element;

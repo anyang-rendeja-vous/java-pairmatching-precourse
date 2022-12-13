@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import pairmatching.domain.Course;
-import pairmatching.domain.Crew;
-import pairmatching.domain.CrewRepository;
 import pairmatching.domain.Level;
 import pairmatching.domain.Missions;
 import pairmatching.domain.Pair;
+import pairmatching.service.PairMatchingService;
 import pairmatching.view.InputView;
 import pairmatching.view.OutputView;
 
@@ -21,26 +20,32 @@ public class PairMatchingController {
 
     InputView inputView = new InputView();
     OutputView outputView = new OutputView();
-    CrewRepository crewRepository = new CrewRepository();
+    PairMatchingService pairMatchingService = new PairMatchingService();
+    public static String course;
+    public static String level;
+    public static String mission;
+
     private int count = 0;
 
     public void run() {
         outputView.printInformation();
         try {
-            List<String> format = inputProcess();
-            makePair(format.get(0), format.get(1));
+            do {
+                inputProcess();
+            } while (!matchingProcess());
         } catch (IllegalArgumentException e) {
             outputView.printError(e.getMessage());
-            inputProcess();
         }
     }
 
     //과정, 레벨, 미션 입력 과정
-    public List<String> inputProcess() {
+    public void inputProcess() {
         outputView.printMatchingProcess();
         List<String> format = getFormat();
-        validateFormat(format);
-        return format;
+        course = format.get(0);
+        level = format.get(1);
+        mission = format.get(2);
+        validateFormat();
     }
 
     //과정, 레벨, 미션 입력 반환
@@ -50,42 +55,39 @@ public class PairMatchingController {
     }
 
     //포맷 유효성 확인
-    public void validateFormat(List<String> format) {
-        String course = format.get(0);
-        String level = format.get(1);
-        String mission = format.get(2);
-        validateCourse(course);
-        validateLevel(level);
-        validateMission(mission);
-        validateLevelMissionMatch(level, mission);
+    public void validateFormat() {
+        validateCourse();
+        validateLevel();
+        validateMission();
+        validateLevelMissionMatch();
     }
 
     //과정 유효성 확인
-    public void validateCourse(String inputCourse) {
+    public void validateCourse() {
         Arrays.stream(Course.values())
-                .filter(course -> course.getCourseName().equals(inputCourse))
+                .filter(courseElement -> courseElement.getCourseName().equals(course))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 과정입니다."));
     }
 
     //레벨 유효성 확인
-    public void validateLevel(String inputLevel) {
+    public void validateLevel() {
         Arrays.stream(Level.values())
-                .filter(level -> level.getLevelName().equals(inputLevel))
+                .filter(levelElement -> levelElement.getLevelName().equals(level))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 레벨입니다."));
     }
 
     //미션 유효성 확인
-    public void validateMission(String inputMission) {
+    public void validateMission() {
         Arrays.stream(Missions.values())
-                .filter(missions -> missions.getMission().contains(inputMission))
+                .filter(missionElement -> missionElement.getMission().contains(mission))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 미션입니다."));
     }
 
     //레벨, 미션 매칭 유효성 확인
-    public void validateLevelMissionMatch(String level, String mission) {
+    public void validateLevelMissionMatch() {
         Arrays.stream(Missions.values())
                 .filter(levelElement -> levelElement.getLevel().equals(level))
                 .filter(missionElement -> missionElement.getMission().equals(mission))
@@ -93,15 +95,25 @@ public class PairMatchingController {
                 .orElseThrow(() -> new IllegalArgumentException("레벨과 미션이 일치하지 않습니다."));
     }
 
-    public void makePair(String course, String level) {
-        List<Crew> crews = crewRepository.getShuffledCrews(course);
-        List<Pair> pair = crewRepository.getPairs(crews);
-        if (hasPairs() && !validatePair(course, level, pair)) {
-            count++;
-            selectRematching(course, level);
+    public boolean matchingProcess() {
+        boolean flag = true;
+        while (flag) {
+            List<Pair> pair = pairMatchingService.makePair(course, level);
+            if (!hasPairs() || validateMatchingHistory(pair)) {
+                addPair(pair);
+                outputView.printPairMatching(pair);
+                flag = true;
+                break;
+            }
+            if (hasPairs() && !validateMatchingHistory(pair)) {
+                if (!rematchingProcess()) {
+                    flag = false;
+                    break;
+                }
+                flag = true;
+            }
         }
-        outputView.printPairMatching(pair);
-        addPair(course, level, pair);
+        return flag;
     }
 
     public void resetPairs() {
@@ -109,29 +121,21 @@ public class PairMatchingController {
             throw new IllegalArgumentException("페어가 존재하지 않습니다.");
         }
         resetPairRepository();
+        count = 0;
         outputView.printResetPairs();
     }
 
-    public boolean validatePair(String course, String level, List<Pair> pairs) {
-        return validateMatchingHistory(course, level, pairs);
-    }
-
-    public void selectRematching(String course, String level) {
+    public boolean rematchingProcess() {
         outputView.printNotificationMessage("매칭 정보가 있습니다. 다시 매칭하겠습니까?");
         outputView.printNotificationMessage("네 | 아니오");
         String input = inputView.getInput();
-        try {
-            validateSelectRematching(input);
-        } catch (IllegalArgumentException e) {
-            outputView.printError(e.getMessage());
-            selectRematching(course, level);
-        }
+        validateSelectRematching(input);
         if (input.equals("네")) {
-            makePair(course, level);
+            count++;
+            pairMatchingService.validatePairs(count);
+            return true;
         }
-        if (input.equals("아니오")) {
-            inputProcess();
-        }
+        return false;
     }
 
     public void validateSelectRematching(String input) {
