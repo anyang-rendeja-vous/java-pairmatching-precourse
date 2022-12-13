@@ -1,6 +1,7 @@
 package pairmatching.controller;
 
 import static pairmatching.domain.PairRepository.addPair;
+import static pairmatching.domain.PairRepository.getPairs;
 import static pairmatching.domain.PairRepository.hasPairs;
 import static pairmatching.domain.PairRepository.resetPairRepository;
 import static pairmatching.domain.PairRepository.validateMatchingHistory;
@@ -141,6 +142,20 @@ public class PairMatchingController {
     public void validateSelectRematching(String input) {
         if (!input.equals("네") && !input.equals("아니오")) {
             throw new IllegalArgumentException("네, 아니오만 입력 가능합니다.");
+        }
+    }
+
+    public void pairsLookUp() {
+        outputView.printInformation();
+        inputProcess();
+        List<Pair> pairs = getPairs();
+        validatePairsLoopUp(pairs);
+        outputView.printPairMatching(pairs);
+    }
+
+    public void validatePairsLoopUp(List<Pair> pairs) {
+        if (pairs == null) {
+            throw new IllegalArgumentException("페어가 존재하지 않습니다.");
         }
     }
 }

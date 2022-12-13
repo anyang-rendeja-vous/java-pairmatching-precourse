@@ -77,4 +77,11 @@ public class PairRepository {
         }
         return true;
     }
+
+    public static List<Pair> getPairs() {
+        if (course.equals(Course.BACKEND.getCourseName())) {
+            return backendMissionPairs.get(mission);
+        }
+        return frontendMissionPairs.get(mission);
+    }
 }

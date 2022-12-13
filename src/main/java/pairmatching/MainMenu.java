@@ -6,9 +6,9 @@ import pairmatching.controller.PairMatchingController;
 
 public enum MainMenu {
 
-    PAIR_MATCHING_MANAGEMENT("1", "페어 매칭", new PairMatchingController()::inputProcess),
-    PAIR_LIST_PRINT_MANAGEMENT("2", "페어 조회", new PairMatchingController()::run),
-    PAIR_INITIALIZATION_MANAGEMENT("3", "페어 초기화", new PairMatchingController()::run),
+    PAIR_MATCHING_MANAGEMENT("1", "페어 매칭", new PairMatchingController()::run),
+    PAIR_LIST_PRINT_MANAGEMENT("2", "페어 조회", new PairMatchingController()::pairsLookUp),
+    PAIR_INITIALIZATION_MANAGEMENT("3", "페어 초기화", new PairMatchingController()::resetPairs),
     QUIT("Q", "종료", null);
 
     private final String selectNumber;
@@ -34,7 +34,7 @@ public enum MainMenu {
     }
 
     public static void printMenu() {
-        System.out.println("기능을 선택하세요.");
+        System.out.println(System.lineSeparator() + "기능을 선택하세요.");
         Arrays.stream(MainMenu.values())
                 .map(MainMenu::toString)
                 .forEach(System.out::println);
