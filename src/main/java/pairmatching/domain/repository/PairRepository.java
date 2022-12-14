@@ -1,18 +1,23 @@
-package pairmatching.domain;
+package pairmatching.domain.repository;
 
-import static pairmatching.controller.PairMatchingController.course;
-import static pairmatching.controller.PairMatchingController.level;
-import static pairmatching.controller.PairMatchingController.mission;
+import static pairmatching.controller.PairMatchController.course;
+import static pairmatching.controller.PairMatchController.level;
+import static pairmatching.controller.PairMatchController.mission;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import pairmatching.domain.model.Course;
+import pairmatching.domain.model.Crew;
+import pairmatching.domain.model.Level;
+import pairmatching.domain.model.Mission;
+import pairmatching.domain.model.Pair;
 
 public class PairRepository {
 
-    public static final LinkedHashMap<String, List<Pair>> backendLevelPairs = new LinkedHashMap<>();
-    public static final LinkedHashMap<String, List<Pair>> frontendLevelPairs = new LinkedHashMap<>();
-    public static final LinkedHashMap<String, List<Pair>> backendMissionPairs = new LinkedHashMap<>();
-    public static final LinkedHashMap<String, List<Pair>> frontendMissionPairs = new LinkedHashMap<>();
+    public static final LinkedHashMap<Level, List<Pair>> backendLevelPairs = new LinkedHashMap<>();
+    public static final LinkedHashMap<Level, List<Pair>> frontendLevelPairs = new LinkedHashMap<>();
+    public static final LinkedHashMap<Mission, List<Pair>> backendMissionPairs = new LinkedHashMap<>();
+    public static final LinkedHashMap<Mission, List<Pair>> frontendMissionPairs = new LinkedHashMap<>();
 
     public static void resetPairRepository() {
         backendLevelPairs.clear();
@@ -21,12 +26,18 @@ public class PairRepository {
         frontendMissionPairs.clear();
     }
 
+    public static List<Pair> makePair(Course course, Level level) {
+        CrewRepository crewRepository = new CrewRepository();
+        List<Crew> shuffledCrew = crewRepository.getShuffledCrews(course);
+        return crewRepository.getPairs(shuffledCrew);
+    }
+
     //페어 리스트 추가
     public static void addPair(List<Pair> pairs) {
-        if (course.equals(Course.BACKEND.getCourseName())) {
+        if (course.equals(Course.BACKEND)) {
             addBackendPair(pairs);
         }
-        if (course.equals(Course.FRONTEND.getCourseName())) {
+        if (course.equals(Course.FRONTEND)) {
             addFrontendPair(pairs);
         }
     }
@@ -50,11 +61,11 @@ public class PairRepository {
     }
 
     public static boolean hasPairs() {
-        return !backendLevelPairs.isEmpty() || !frontendLevelPairs.isEmpty();
+        return backendLevelPairs.containsKey(level) || frontendLevelPairs.containsKey(level);
     }
 
     public static boolean validateMatchingHistory(List<Pair> pairs) {
-        if (course.equals(Course.BACKEND.getCourseName())) {
+        if (course.equals(Course.BACKEND)) {
             return validateBackendPairs(pairs);
         }
         return validateFrontendPairs(pairs);
@@ -62,7 +73,9 @@ public class PairRepository {
 
     private static boolean validateBackendPairs(List<Pair> pairs) {
         for (Pair pair : pairs) {
-            if (backendLevelPairs.get(level).stream().anyMatch(name -> name.toString().equals(pair.toString()))) {
+            if (backendLevelPairs.get(level)
+                    .stream()
+                    .anyMatch(name -> name.toString().equals(pair.toString()))) {
                 return false;
             }
         }
@@ -71,7 +84,9 @@ public class PairRepository {
 
     private static boolean validateFrontendPairs(List<Pair> pairs) {
         for (Pair pair : pairs) {
-            if (frontendLevelPairs.get(level).stream().anyMatch(name -> name.toString().equals(pair.toString()))) {
+            if (frontendLevelPairs.get(level)
+                    .stream()
+                    .anyMatch(name -> name.toString().equals(pair.toString()))) {
                 return false;
             }
         }
@@ -79,7 +94,7 @@ public class PairRepository {
     }
 
     public static List<Pair> getPairs() {
-        if (course.equals(Course.BACKEND.getCourseName())) {
+        if (course.equals(Course.BACKEND)) {
             return backendMissionPairs.get(mission);
         }
         return frontendMissionPairs.get(mission);

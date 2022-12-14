@@ -1,8 +1,9 @@
-package pairmatching.domain;
+package pairmatching.domain.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import pairmatching.domain.model.Crew;
 
 public class Pair {
 

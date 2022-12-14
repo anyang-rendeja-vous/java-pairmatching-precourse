@@ -1,9 +1,9 @@
 package pairmatching.controller;
 
-import static pairmatching.MainMenu.callLineFunction;
+import static pairmatching.MainFeature.callMainFeature;
 
 import java.util.Arrays;
-import pairmatching.MainMenu;
+import pairmatching.MainFeature;
 import pairmatching.view.InputView;
 import pairmatching.view.OutputView;
 
@@ -20,7 +20,7 @@ public class MainController {
             }
             try {
                 validateSelectNumber(selectNumber);
-                callLineFunction(selectNumber);
+                callMainFeature(selectNumber);
             } catch (IllegalArgumentException e) {
                 outputView.printError(e.getMessage());
             }
@@ -29,13 +29,13 @@ public class MainController {
 
     //메뉴 선택
     public String getSelectMenu() {
-        MainMenu.printMenu();
+        MainFeature.printMenu();
         return inputView.getInput();
     }
 
     //메뉴 유효성 확인
     public void validateSelectNumber(String selectNumber) {
-        Arrays.stream(MainMenu.values())
+        Arrays.stream(MainFeature.values())
                 .filter(number -> number.getSelectNumber().equals(selectNumber))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 입력입니다."));

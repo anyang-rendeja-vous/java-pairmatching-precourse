@@ -1,14 +1,14 @@
 package pairmatching.view;
 
 import java.util.List;
-import pairmatching.domain.Pair;
+import pairmatching.domain.model.Pair;
 
 public class OutputView {
 
-    private final String PREFIX = "[ERROR] ";
+    private final String ERROR_PREFIX = "[ERROR] ";
 
     public void printError(String errorMessage) {
-        System.out.println(PREFIX + errorMessage);
+        System.out.println(ERROR_PREFIX + errorMessage);
     }
 
     public void printInformation() {
@@ -22,6 +22,9 @@ public class OutputView {
         System.out.println("  - 레벨4: 성능개선 | 배포");
         System.out.println("  - 레벨5: ");
         System.out.println("#############################################");
+    }
+
+    public void printMatchingProcess() {
         System.out.println("과정, 레벨, 미션을 선택하세요.");
         System.out.println("ex) 백엔드, 레벨1, 자동차경주");
     }
@@ -33,5 +36,9 @@ public class OutputView {
 
     public void printResetPairs() {
         System.out.println("초기화 되었습니다.");
+    }
+
+    public void printNotificationMessage(String message) {
+        System.out.println(message);
     }
 }

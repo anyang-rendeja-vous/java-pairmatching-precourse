@@ -1,26 +1,34 @@
-package pairmatching.domain;
+package pairmatching.domain.repository;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import pairmatching.controller.FileController;
+import pairmatching.FileReader;
+import pairmatching.domain.model.Course;
+import pairmatching.domain.model.Crew;
+import pairmatching.domain.model.Pair;
 
 public class CrewRepository {
 
-    FileController fileController = new FileController();
+    public static List<Crew> backendCrews = new ArrayList<Crew>();
+    public static List<Crew> frontendCrews = new ArrayList<Crew>();
 
-    public List<Crew> getShuffledCrews(String course) {
+    FileReader fileReader = new FileReader();
+
+    public List<Crew> getShuffledCrews(Course course) {
         List<Crew> crews = getCrews(course);
         return Randoms.shuffle(crews);
     }
 
-    public List<Crew> getCrews(String course) {
-        if (course.equals(Course.BACKEND.getCourseName())) {
-            return fileController.readBackendCrews();
+    public List<Crew> getCrews(Course course) {
+        if (course.equals(Course.BACKEND)) {
+            backendCrews = fileReader.readBackendCrews();
+            return backendCrews;
         }
-        return fileController.readFrontendCrews();
+        frontendCrews = fileReader.readFrontendCrews();
+        return frontendCrews;
     }
 
     public List<Pair> getPairs(List<Crew> shuffledCrew) {
